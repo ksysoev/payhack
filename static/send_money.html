@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>QR Code Scanner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>My O'Pay QR</h1>
+    <h2>Olga Sidorova</h2>
+    <h3>Move phone until code is in focus</h3>
+    <div id="readerContainer"></div>
+    <div id="resultContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <script>
+      var codeScanner = new Html5QrcodeScanner("readerContainer", {
+        fps: 10,
+        qrbox: {
+          width: 250,
+          height: 250,
+        },
+      });
+
+      function onScanSuccess(result) {
+        console.log(`Transaction details: ${result}`);
+        document.getElementById("resultContainer").innerHTML = result;
+
+        codeScanner.clear();
+        document.getElementById("readerContainer").remove();
+      }
+
+      function onScanError(error) {
+        console.log(`Code scan error = ${error}`);
+      }
+
+      codeScanner.render(onScanSuccess, onScanError);
+    </script>
+  </body>
+</html>

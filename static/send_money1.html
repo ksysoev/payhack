@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="english">
+  <head>
+    <title>exported project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elliptic/6.5.4/elliptic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="./index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap"
+      data-tag="font"
+    />
+    <link rel="stylesheet" href="./public/css/send_money.css" />
+  </head>
+  <body>
+    <div>
+      <link href="./public/css/send_money1.css" rel="stylesheet" />
+
+      <div class="typeamount-container">
+        <div class="typeamount-typeamount">
+          <div class="typeamount-header">
+            <div class="typeamount-titlebalancebadgelogo">
+              <div class="typeamount-titlebalancebadge"></div>
+              <div class="typeamount-logoclose">
+                <img
+                  src="public/external/iconclose2792-vk7h.svg"
+                  alt="iconclose2792"
+                  class="typeamount-iconclose"
+                />
+              </div>
+            </div>
+          </div>
+          <div id="readerContainer"></div>
+          <div class="typeamount-content">
+            <div class="typeamount-bar">
+              <img
+                src="public/external/rectangle72791-7vqm-200h.png"
+                alt="Rectangle72791"
+                class="typeamount-rectangle7"
+              />
+              <div class="typeamount-sendicon">
+                <img
+                  src="public/external/check2791-kvld.svg"
+                  alt="check2791"
+                  class="typeamount-check"
+                />
+              </div>
+              <span class="typeamount-text"><span>RM 0.00</span></span>
+            </div>
+            <div class="typeamount-keyboard" style="display: none;">
+              <div class="typeamount-keypad">
+                <div class="typeamount-home-indicator">
+                  <img
+                    src="public/external/homeindicatori279-rnzb-200h.png"
+                    alt="HomeIndicatorI279"
+                    class="typeamount-home-indicator1"
+                  />
+                </div>
+                <div class="typeamount-frame-key">
+                  <span class="typeamount-text02">1</span>
+                  <span class="typeamount-text03"></span>
+                </div>
+                <div class="typeamount-frame-key01">
+                  <span class="typeamount-text04">7</span>
+                  <span class="typeamount-text05"><span>pqrs</span></span>
+                </div>
+                <div class="typeamount-frame-key02">
+                  <span class="typeamount-text07">4</span>
+                  <span class="typeamount-text08"><span>ghi</span></span>
+                </div>
+                <div class="typeamount-frame-key03">
+                  <span class="typeamount-text10">2</span>
+                  <span class="typeamount-text11"><span>abc</span></span>
+                </div>
+                <div class="typeamount-frame-key04">
+                  <span class="typeamount-text13">8</span>
+                  <span class="typeamount-text14"><span>tuv</span></span>
+                </div>
+                <div class="typeamount-frame-key05">
+                  <span class="typeamount-text16">0</span>
+                </div>
+                <div class="typeamount-frame-key06">
+                  <span class="typeamount-text17"><span>+*#</span></span>
+                </div>
+                <div class="typeamount-frame-key07">
+                  <div class="typeamount-icon">
+                    <img
+                      src="public/external/deletebuttoni279-yuk.svg"
+                      alt="DeleteButtonI279"
+                      class="typeamount-delete-button"
+                    />
+                  </div>
+                </div>
+                <div class="typeamount-frame-key08">
+                  <span class="typeamount-text19">5</span>
+                  <span class="typeamount-text20"><span>jkl</span></span>
+                </div>
+                <div class="typeamount-frame-key09">
+                  <span class="typeamount-text22">3</span>
+                  <span class="typeamount-text23"><span>def</span></span>
+                </div>
+                <div class="typeamount-frame-key10">
+                  <span class="typeamount-text25">9</span>
+                  <span class="typeamount-text26"><span>wxyz</span></span>
+                </div>
+                <div class="typeamount-frame-key11">
+                  <span class="typeamount-text28">6</span>
+                  <span class="typeamount-text29"><span>mno</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var codeScanner = new Html5QrcodeScanner("readerContainer", {
+        fps: 10,
+        qrbox: {
+          width: 250,
+          height: 250,
+        },
+      });
+
+      function onScanSuccess(result) {
+        console.log(`Transaction details: ${result}`);
+        document.getElementById("resultContainer").innerHTML = result;
+
+        codeScanner.clear();
+        document.getElementById("readerContainer").remove();
+      }
+
+      function onScanError(error) {
+        console.log(`Code scan error = ${error}`);
+      }
+
+      codeScanner.render(onScanSuccess, onScanError);
+    </script>
+  </body>
+</html>
