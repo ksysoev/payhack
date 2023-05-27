@@ -1,46 +1,110 @@
-const EC = require('elliptic').ec;
-const ec = new EC('secp256k1'); // Use the secp256k1 curve
+const ec = new elliptic.ec('secp256k1'); // Use the secp256k1 curve
+const senderKeys = ec.genKeyPair();
+const reciverKeys = ec.genKeyPair();
+
+
+class Wallet {
+    constructor(wallet_id, privateKey, publicKey, ledger) {
+        this.keyPair = ec.genKeyPair();
+        this.privateKey = privateKey || this.keyPair.getPrivate().toString('hex');
+        this.publicKey = publicKey || this.keyPair.getPublic().encode('hex');
+        this.id = wallet_id;
+
+        this.ledger = ledger || new Ledger(this.id);
+    }
+
+    setId(id) {
+        this.id = id;
+
+    }
+
+    sendMoney(amount, reciverWalletID, reciverLastTx) {
+        let lasttx_sender = this.ledger.getLastTransaction().shaHash();
+        let lasttx_reciver = reciverLastTx;
+
+        let transaction = new Transaction(this.ledger.nextId(), this.id, reciverWalletID, amount, lasttx_sender, lasttx_reciver);
+        transaction.signSender(this.keyPair);
+
+        this.ledger.addTransaction(transaction);
+    }
+    
+    saveToLocalStorage() {
+        this.ledger.saveToLocalStorage();
+        localStorage.setItem('wallet_id', this.id);
+        localStorage.setItem('privateKey', this.privateKey);
+        localStorage.setItem('publicKey', this.publicKey);
+    } 
+    static loadFromLocalStorage() {
+        if(localStorage.getItem('wallet_id') == null) {
+            let new_wallet =  new Wallet(Math.floor(Math.random() * 100));
+            new_wallet.saveToLocalStorage();
+
+            return new_wallet;
+        }
+
+        let id = localStorage.getItem('wallet_id');
+        let privateKey = localStorage.getItem('privateKey');
+        let publicKey = localStorage.getItem('publicKey');
+
+
+        let ledger = Ledger.loadFromLocalStorage(id);
+
+        return new Wallet(id, privateKey, publicKey, ledger);
+    }
+}
 
 class Ledger {
-    constructor(user_id) {
-      this.transactions = [];
-      this.balance = 0;
+    constructor(wallet_id) {
 
-      this.userid = user_id;
+        // id, from, to, amount, lasttx_sender, lasttx_reciver
+        let init_transaction = new Transaction(Math.floor(Math.random() * 100), 0, wallet_id, 100, 0, 0); 
+        this.count = 0;
+        this.transactions = [init_transaction];
+        this.balance = 100;
+
+        this.wallet_id = wallet_id;
+    }
+
+    nextId() {
+        this.count += 1;
+        return this.count;
     }
 
     addTransaction(tx) {
-        if (tx.amountFor(this.userid) + this.balance < 0) {
+        if (tx.amountFor(this.wallet_id) + this.balance < 0) {
             throw "Not enough money";
         }
 
         this.transactions.push(tx);
-        this.balance += tx.amountFor(this.userid);
+        this.balance += tx.amountFor(this.wallet_id);
     }
-  
+
     getTransactions() {
-      return this.transactions;
+        return this.transactions;
     }
 
     getLastTransaction() {
         return this.transactions[this.transactions.length - 1];
     }
-  
+
     getBalance() {
-      return this.balance;
+        return this.balance;
     }
 
     toString() {
         let str = "";
         for (let i = 0; i < this.transactions.length; i++) {
-            str += this.transactions[i].toString() + "\n";
+            str += this.transactions[i].toString() + "%";
         }
 
         return str;
     }
 
-    fromString(str) {
-        let txs = str.split("\n");
+    fromString(str, id) {
+        if (str == null) {
+            return this;
+        }
+        let txs = str.split("%");
 
         for (let i = 0; i < txs.length; i++) {
             let tx = new Transaction();
@@ -50,14 +114,23 @@ class Ledger {
     }
 
     topUp(amount) {
-        let tx = new Transaction(this.transactions.length, 0, this.userid, amount, 0, 0);
-        tx.signReciver(reciverKeys);
+        let tx = new Transaction(this.transactions.length, 0, this.wallet_id, amount, 0, 0);
         this.addTransaction(tx);
     }
-  }
 
+    saveToLocalStorage() {
+        localStorage.setItem('ledger', this.toString());
+    }
 
- class Transaction {
+    static loadFromLocalStorage(id) {
+        let ledger = new Ledger(id);
+        ledger.fromString(localStorage.getItem('ledger'));
+
+        return ledger;
+    }
+}
+
+class Transaction {
     constructor(id, from, to, amount, lasttx_sender, lasttx_reciver) {
         this.id = id;
         this.from = from;
@@ -72,10 +145,6 @@ class Ledger {
     }
 
     toString() {
-        if (this.reciverSign != null && this.senderSign != null) {
-            return this.baseString() + "|" + this.senderSign +  "|" + this.reciverSign;
-        }
-
         if (this.senderSign != null) {
             return this.baseString() + "|" + this.senderSign;
         }
@@ -100,50 +169,23 @@ class Ledger {
         this.senderSign = senderKeys.sign(this.baseString()).toDER('hex');
     }
 
-    signReciver(reciverKeys) {
-        this.reciverSign = reciverKeys.sign(this.baseString() + this.senderSign).toDER('hex');
-    }
-
-    amountFor(user_id) {
-        if (this.from == user_id) {
+    amountFor(wallet_id) {
+        if (this.from == wallet_id) {
             return -this.amount;
         }
 
-        if (this.to == user_id) {
+        if (this.to == wallet_id) {
             return this.amount;
         }
-
         throw "User not in transaction";
     }
-  }
 
+    shaHash() {
+        return CryptoJS.SHA256(this.toString()).toString();
+    }
+}
+let wallet = Wallet.loadFromLocalStorage();
+wallet.sendMoney(5, 2, "testHash");
+wallet.saveToLocalStorage();
 
-// Generate a key pair
-const senderKeys = ec.genKeyPair();
-const reciverKeys = ec.genKeyPair();
-
-let senderLedger = new Ledger(1);
-let reciverLedger = new Ledger(2);
-
-senderLedger.topUp(1000);
-reciverLedger.topUp(1000);
-
-
-lasttx_sender = senderLedger.getLastTransaction().id
-lasttx_reciver = reciverLedger.getLastTransaction().id
-let transaction = new Transaction(lasttx_sender + 1, 1, 2, 100, lasttx_sender, lasttx_reciver);
-transaction.signSender(senderKeys);
-transaction.signReciver(reciverKeys);
-
-senderLedger.addTransaction(transaction);
-reciverLedger.addTransaction(transaction);
-
-console.log(transaction.toString());
-
-console.log(senderLedger.toString());
-
-console.log(reciverLedger.toString());
-
-
-
-
+console.log(wallet);
