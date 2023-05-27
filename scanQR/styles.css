@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 30vh;
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  text-align: start;
+  margin-top: 10;
+}
+
+h2 {
+  text-align: start;
+  margin-top: 0;
+}
+
+h3 {
+  font-size: medium;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+#readerContainer {
+  width: 500px;
+  position: relative;
+  padding: 25%;
+  border: 1px solid black;
+  border-radius: 0%;
+}
