@@ -45,7 +45,6 @@ class Wallet {
         let lasttx_sender = this.ledger.getLastTransaction().shaHash();
         let lasttx_reciver = receiver.lastTx;
         let reciverWalletID = receiver.sender;
-
         let transaction = new Transaction(this.ledger.nextId(), this.id, reciverWalletID, amount, lasttx_sender, lasttx_reciver);
         transaction.signSender(this.keyPair);
 
@@ -134,7 +133,7 @@ class Ledger {
         this.wallet_id = id;
         let txs = str.split("%");
 
-
+        this.transactions = [];
         for (let i = 0; i < txs.length; i++) {
             let tx = new Transaction();
             tx.parse(txs[i]);

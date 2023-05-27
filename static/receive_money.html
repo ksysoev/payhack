@@ -45,6 +45,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/elliptic/6.5.4/elliptic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <script src="./index.js"></script>
 
     <link rel="stylesheet" href="./public/css/reciver_info.css" />
@@ -72,16 +73,21 @@
               </div>
             </div>
           </div>
+          <div id="step1">
           <div class="my-q-code-qr" id="qrContainer">
 
           </div>
-          <button class="my-q-code-footerbutton">
+          <button class="my-q-code-footerbutton" id="Procced">
             <div class="my-q-code-btnget">
               <span class="my-q-code-text2 Body2">
                 <span>Procced</span>
               </span>
             </div>
           </button>
+          </div>
+          <div id="step2" style="display: none;">
+            <div id="readerContainer"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -89,7 +95,28 @@
       const QRElement = document.getElementById("qrContainer");
         QRElement.innerHTML = "";
         let data = wallet.reciveMoneyInformation();
-        new QRCode(QRElement, JSON.stringify(data));
+        new QRCode(QRElement, data);
+        
+        document.getElementById("Procced").onclick = function() {
+          document.getElementById("step1").style.display = "none";
+          document.getElementById("step2").style.display = "block";
+
+        }
+
+        var codeScanner = new Html5QrcodeScanner("readerContainer", {
+        fps: 10,
+        qrbox: 250,
+      });
+
+      function onScanSuccess(result) {
+        console.log(`Transaction details: ${result}`);
+        wallet.reciveMoney(result);
+      }
+
+
+      function onScanError(error) { }
+
+      codeScanner.render(onScanSuccess, onScanError);
     </script>
   </body>
 </html>
