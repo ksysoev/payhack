@@ -1,0 +1,321 @@
+.landingpage-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.landingpage-landingpage {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+.landingpage-header {
+  width: 361px;
+  height: 140px;
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  flex-shrink: 0;
+  background-color: var(--dl-color-default-main2);
+  background-image: linear-gradient(205deg, rgba(8, 50, 113, 1) 0%, rgba(147, 182, 236, 1) 47%, rgba(37, 108, 216, 0.4000000059604645) 100%, rgba(147, 182, 236, 1) 100%);
+}
+.landingpage-titlebalancebadgelogo {
+  gap: 16px;
+  top: 16px;
+  left: 16px;
+  width: 330px;
+  display: flex;
+  position: absolute;
+  align-self: stretch;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.landingpage-titlebalancebadge {
+  gap: 4px;
+  width: 287px;
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+.landingpage-text {
+  color: rgba(255, 255, 255, 1);
+  height: auto;
+  font-size: 16px;
+  align-self: stretch;
+  font-style: Bold;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 700;
+  line-height: 26px;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.landingpage-frame15 {
+  gap: 16px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.landingpage-balance {
+  gap: 190px;
+  display: flex;
+  align-items: flex-start;
+}
+.landingpage-text02 {
+  color: rgba(255, 255, 255, 1);
+  height: auto;
+  font-size: 24px;
+  font-style: Bold;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 700;
+  line-height: 26px;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.landingpage-qr {
+  gap: 20px;
+  display: flex;
+  align-items: center;
+}
+.landingpage-btnget {
+  width: 125px;
+  height: 36px;
+  display: flex;
+  padding: 8px 16px;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 100px;
+  justify-content: center;
+  background-color: rgba(6, 74, 176, 1);
+}
+.landingpage-text04 {
+  color: var(--dl-color-system_dark-1prominenttext);
+  height: auto;
+  text-align: center;
+  line-height: 20px;
+}
+.landingpage-icons {
+  gap: 8px;
+  display: flex;
+  align-items: flex-start;
+}
+.landingpage-iconnotifications {
+  width: 24px;
+  height: 24px;
+}
+.landingpage-logoclose {
+  gap: 10px;
+  display: flex;
+  padding: 5px;
+  align-items: flex-start;
+}
+.landingpage-iconclose {
+  width: 16px;
+  height: 16px;
+}
+.landingpage-transaction {
+  gap: 8px;
+  width: 361px;
+  display: flex;
+  padding: 16px;
+  flex-grow: 1;
+  align-items: flex-start;
+  flex-shrink: 0;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 1);
+}
+.landingpage-text06 {
+  color: rgba(0, 0, 0, 1);
+  height: auto;
+  font-size: 16px;
+  align-self: stretch;
+  font-style: Bold;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 700;
+  line-height: 26px;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.landingpage-list {
+  gap: 16px;
+  display: flex;
+  padding: 16px;
+  align-items: flex-start;
+  border-radius: 8px;
+  flex-direction: column;
+  background-color: rgba(247, 247, 247, 1);
+}
+.landingpage-transactionid {
+  gap: 8px;
+  width: 296px;
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.landingpage-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.landingpage-group {
+  top: 0px;
+  left: 0px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  position: absolute;
+  align-items: flex-start;
+  flex-shrink: 1;
+}
+.landingpage-group1 {
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  position: absolute;
+  align-items: flex-start;
+  flex-shrink: 1;
+}
+.landingpage-vector {
+  top: 0px;
+  left: 0px;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+}
+.landingpage-vector1 {
+  top: 7px;
+  left: 7px;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+}
+.landingpage-frame14 {
+  gap: 4px;
+  width: 264px;
+  display: flex;
+  flex-grow: 1;
+  align-items: flex-start;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+.landingpage-walletid {
+  gap: 100px;
+  display: flex;
+  align-items: flex-start;
+}
+.landingpage-text08 {
+  color: rgba(0, 0, 0, 1);
+  height: auto;
+  font-size: 14px;
+  font-style: Medium;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 500;
+  line-height: 14px;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.landingpage-frame13 {
+  gap: 40px;
+  display: flex;
+  align-self: stretch;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.landingpage-transactionid1 {
+  gap: 8px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.landingpage-title {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.landingpage-text10 {
+  color: var(--dl-color-system_light-1prominenttext);
+  height: auto;
+  font-size: 14px;
+  font-style: Medium;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 500;
+  line-height: 14px;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.landingpage-transactionid2 {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.landingpage-text12 {
+  color: rgba(88, 82, 82, 1);
+  height: auto;
+  font-size: 12px;
+  font-style: Medium;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 500;
+  line-height: 12px;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.landingpage-amount {
+  gap: 8px;
+  width: 129px;
+  display: flex;
+  flex-grow: 1;
+  align-items: flex-end;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+.landingpage-title1 {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.landingpage-text14 {
+  color: var(--dl-color-system_light-1prominenttext);
+  height: auto;
+  font-size: 14px;
+  font-style: Medium;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 500;
+  line-height: 14px;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.landingpage-transactionid3 {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.landingpage-text16 {
+  color: rgba(88, 82, 82, 1);
+  height: auto;
+  font-size: 12px;
+  font-style: Medium;
+  text-align: left;
+  font-family: DM Sans;
+  font-weight: 500;
+  line-height: 12px;
+  font-stretch: normal;
+  text-decoration: none;
+}

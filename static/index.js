@@ -209,6 +209,17 @@ class Transaction {
         throw "User not in transaction";
     }
 
+    otherWallet(wallet_id) {
+        if (this.from == wallet_id) {
+            return this.to;
+        }
+
+        if (this.to == wallet_id) {
+            return this.from;
+        }
+        throw "User not in transaction";
+    }
+
     shaHash() {
         return CryptoJS.SHA256(this.toString()).toString();
     }

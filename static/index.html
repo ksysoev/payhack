@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="english">
+  <head>
+    <title>exported project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/elliptic/6.5.4/elliptic.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+        <script src="./index.js"></script>
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&amp;display=swap"
+      data-tag="font"
+    />
+    <link rel="stylesheet" href="./public/css/ledger.css" />
+  </head>
+  <body>
+    <div>
+      <link href="./public/css/ledger1.css" rel="stylesheet" />
+
+      <div class="landingpage-container">
+        <div class="landingpage-landingpage">
+          <div class="landingpage-header">
+            <div class="landingpage-titlebalancebadgelogo">
+              <div class="landingpage-titlebalancebadge">
+                <span class="landingpage-text">
+                  <span>My 0’Pay balance</span>
+                </span>
+                <div class="landingpage-frame15">
+                  <div class="landingpage-balance">
+                    <span class="landingpage-text02"><span id="Balance"></span></span>
+                  </div>
+                  <div class="landingpage-qr">
+                    <div class="landingpage-btnget">
+                      <span class="landingpage-text04 Body2">
+                        <span>My QR Code</span>
+                      </span>
+                    </div>
+                    <div class="landingpage-icons">
+                      <img
+                        src="public/external/iconnotifications2793-sgn3.svg"
+                        alt="iconnotifications2793"
+                        class="landingpage-iconnotifications"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="landingpage-logoclose">
+                <img
+                  src="public/external/iconclose2793-m8p7.svg"
+                  alt="iconclose2793"
+                  class="landingpage-iconclose"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="landingpage-transaction">
+            <span class="landingpage-text06"><span>Transactions</span></span>
+            <div class="landingpage-list" id="TransactionsHistory">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script> 
+      let data = wallet.history();
+      
+      let list = document.getElementById("TransactionsHistory");
+  
+      for (let i = 0; i < data.length; i++) {
+          let div = document.createElement("div");
+
+          
+          div.innerHTML = `
+          <div class="landingpage-transactionid">
+                <div class="landingpage-icon">
+                  <div class="landingpage-group">
+                    <div class="landingpage-group1">
+                      <img
+                        src="public/external/vectori279-y86c.svg"
+                        alt="VectorI279"
+                        class="landingpage-vector"
+                      />
+                    </div>
+                    <img
+                      src="public/external/vectori279-ezbp.svg"
+                      alt="VectorI279"
+                      class="landingpage-vector1"
+                    />
+                  </div>
+                </div>
+                <div class="landingpage-frame14">
+                  <div class="landingpage-walletid">
+                    <span class="landingpage-text08">
+                      <span>Wallet ID : ${data[i].otherWallet(wallet.id)}</span>
+                    </span>
+                  </div>
+                  <div class="landingpage-frame13">
+                    <div class="landingpage-transactionid1">
+                      <div class="landingpage-title">
+                        <span class="landingpage-text10">
+                          <span>Transaction ID</span>
+                        </span>
+                      </div>
+                      <div class="landingpage-transactionid2">
+                        <span class="landingpage-text12">
+                          <span>${data[i].id}</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="landingpage-amount">
+                      <div class="landingpage-title1">
+                        <span class="landingpage-text14">
+                          <span>Amount</span>
+                        </span>
+                      </div>
+                      <div class="landingpage-transactionid3">
+                        <span class="landingpage-text16">
+                          <span>RM ${data[i].amountFor(wallet.id)}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `
+          
+          
+          
+          
+          "Wallet " + data[i].from + " -> " + "Wallet " + data[i].to + " : " +  data[i].amount + "MYR";
+          list.appendChild(div);
+      }
+  
+      let balance = document.getElementById("Balance");
+      balance.innerHTML = "RM " + wallet.balance();
+  
+  </script>
+  </body>
+</html>
