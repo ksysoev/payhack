@@ -18,6 +18,14 @@ class Wallet {
 
     }
 
+    balance() {
+        return this.ledger.getBalance();
+    }
+
+    history() {
+        return this.ledger.getTransactions();
+    }
+
     sendMoney(amount, reciverWalletID, reciverLastTx) {
         let lasttx_sender = this.ledger.getLastTransaction().shaHash();
         let lasttx_reciver = reciverLastTx;
@@ -97,6 +105,7 @@ class Ledger {
             str += this.transactions[i].toString() + "%";
         }
 
+        str = str.substring(0, str.length-1);
         return str;
     }
 
@@ -104,7 +113,9 @@ class Ledger {
         if (str == null) {
             return this;
         }
+        this.wallet_id = id;
         let txs = str.split("%");
+
 
         for (let i = 0; i < txs.length; i++) {
             let tx = new Transaction();
@@ -124,7 +135,7 @@ class Ledger {
 
     static loadFromLocalStorage(id) {
         let ledger = new Ledger(id);
-        ledger.fromString(localStorage.getItem('ledger'));
+        ledger.fromString(localStorage.getItem('ledger'), id);
 
         return ledger;
     }
@@ -184,8 +195,4 @@ class Transaction {
         return CryptoJS.SHA256(this.toString()).toString();
     }
 }
-let wallet = Wallet.loadFromLocalStorage();
-wallet.sendMoney(5, 2, "testHash");
-wallet.saveToLocalStorage();
-
-console.log(wallet);
+var wallet = Wallet.loadFromLocalStorage();
