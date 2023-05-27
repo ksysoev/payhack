@@ -154,22 +154,29 @@
           alert("Amount should be greater than 0");
           return;
         }
-        if (amountValue == 0) {
+        if (amountValue === 0) {
           alert("Amount should be greater than 0");
           return;
         }
-        if (amountValue == "") {
+        if (amountValue === "") {
           alert("Amount should be greater than 0");
           return;
         }
 
-        let tx = wallet.sendMoney(amountValue, reciverInfo);
-        document.getElementById("amount").style.display = "none";
-        const QRElement = document.getElementById("qrContainer");
-        QRElement.innerHTML = "";
-        new QRCode(QRElement,  tx );
-        document.getElementById("step2").style.display = "none";
-        document.getElementById("step3").style.display = "block";
+        try {
+          let tx = wallet.sendMoney(amountValue, reciverInfo);
+          document.getElementById("amount").style.display = "none";
+          const QRElement = document.getElementById("qrContainer");
+          QRElement.innerHTML = "";
+          new QRCode(QRElement,  tx );
+          document.getElementById("step2").style.display = "none";
+          document.getElementById("step3").style.display = "block";
+        } catch (error) {
+          console.log(error);
+          alert(error.message);
+        }
+        
+        
       }
 
       document.getElementById("Procced").onclick = function() {

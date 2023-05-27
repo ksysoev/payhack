@@ -45,6 +45,22 @@ class Wallet {
         let lasttx_sender = this.ledger.getLastTransaction().shaHash();
         let lasttx_reciver = receiver.lastTx;
         let reciverWalletID = receiver.sender;
+
+        if (reciverWalletID == this.id) {
+            throw new Error("Can't send money to yourself");
+        }
+
+        if (this.ledger.getBalance() < amount) {
+            throw new Error("Not enough money");
+        }
+
+        let transactions = this.ledger.getTransactions();
+        for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].lasttx_reciver == lasttx_reciver) {
+                throw new Error("Invalid transaction. Reciever code is already used");
+            }
+        }
+
         let transaction = new Transaction(this.ledger.nextId(), this.id, reciverWalletID, amount, lasttx_sender, lasttx_reciver);
         transaction.signSender(this.keyPair);
 
@@ -91,17 +107,35 @@ class Ledger {
     }
 
     nextId() {
+        const localPrefix = this.transactions[0].id;
         this.count += 1;
-        return this.count;
+        return String(localPrefix) + "-" + String(this.count);
     }
 
     addTransaction(tx) {
-        if (tx.amountFor(this.wallet_id) + this.balance < 0) {
-            throw "Not enough money";
+        const amount = tx.amountFor(this.wallet_id);
+        if (amount + this.balance < 0) {
+            throw new Error("Not enough money");
+        }
+        
+        const lastTx = this.getLastTransaction();
+
+        if (lastTx == null) {
+            this.transactions.push(tx);
+            this.balance += tx.amountFor(this.wallet_id);
+            return;
+        }
+
+        if (amount > 0 && lastTx.shaHash() != tx.lasttx_reciver) {
+            throw new Error("Invalid transaction");
+        }
+
+        if (amount < 0 && lastTx.shaHash() != tx.lasttx_sender) {
+            throw new Error("Invalid transaction");
         }
 
         this.transactions.push(tx);
-        this.balance += tx.amountFor(this.wallet_id);
+        this.balance += amount;
     }
 
     getTransactions() {
@@ -135,6 +169,7 @@ class Ledger {
 
         this.transactions = [];
         this.balance = 0;
+        
         for (let i = 0; i < txs.length; i++) {
             let tx = new Transaction();
             tx.parse(txs[i]);
@@ -184,7 +219,7 @@ class Transaction {
     parse(txstr) {
         let tx = txstr.split("|");
 
-        this.id = Number(tx[0]);
+        this.id = tx[0];
         this.from = Number(tx[1]);
         this.to = Number(tx[2]);
         this.amount = Number(tx[3]);
@@ -206,7 +241,7 @@ class Transaction {
         if (this.to == wallet_id) {
             return this.amount;
         }
-        throw "User not in transaction";
+        throw new Error("User not in transaction");
     }
 
     otherWallet(wallet_id) {
@@ -217,7 +252,7 @@ class Transaction {
         if (this.to == wallet_id) {
             return this.from;
         }
-        throw "User not in transaction";
+        throw new Error("User not in transaction");
     }
 
     shaHash() {

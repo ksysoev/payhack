@@ -112,9 +112,13 @@
 
       function onScanSuccess(result) {
         console.log(`Transaction details: ${result}`);
-        wallet.reciveMoney(result);
-        window.location.href = './success.html';
+        try {
+          wallet.reciveMoney(result);
+        } catch (error) {
+          alarm(error.message);
+        }
         
+        window.location.href = './success.html';
       }
 
 
