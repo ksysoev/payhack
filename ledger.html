@@ -14,9 +14,9 @@
             <div class="v16_4338">
                 <div class="v16_4339">
                     <div class="v16_4340">
-                        <span class="v16_4341">My O`Pay Wallet balance</span>
+                        <span class="v16_4341">My O`Pay Wallet balance</span> <span id="Balance">RM 100</span>
                         <div class="v16_4342">
-                            <span class="v16_4343">RM 100</span>
+                            
                         <div class="v16_4344">
                         <div class="name">
 
@@ -35,11 +35,26 @@
         </div>
     </div>
     <div class="v16_4478">
-        <span class="v16_4350">Transactions 1</span>
-        <div class="v16_4386"> 
-            <div></div>
+        <span class="v16_4350">Transactions:</span>
+        <div class="v16_4386" id="TransactionsHistory"> 
         </div>
     </div>
 </div>
+
+<script> 
+    let data = wallet.history();
+    
+    let list = document.getElementById("TransactionsHistory");
+
+    for (let i = 0; i < data.length; i++) {
+        let div = document.createElement("div");
+        div.innerHTML = "Wallet " + data[i].from + " -> " + "Wallet " + data[i].to + " : " +  data[i].amount + "MYR";
+        list.appendChild(div);
+    }
+
+    let balance = document.getElementById("Balance");
+    balance.innerHTML = wallet.balance() + "MYR";
+
+</script>
 </body>
 </html>

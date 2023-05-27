@@ -15,7 +15,6 @@ class Wallet {
 
     setId(id) {
         this.id = id;
-
     }
 
     balance() {
@@ -26,14 +25,34 @@ class Wallet {
         return this.ledger.getTransactions();
     }
 
-    sendMoney(amount, reciverWalletID, reciverLastTx) {
+    reciveMoneyInformation() {
+        let lastTx = this.ledger.getLastTransaction();
+        return JSON.stringify({
+            sender: this.id,
+            lastTx: lastTx.shaHash()
+        });
+    }
+
+    reciveMoney(txstr) { 
+        let tx = new Transaction();
+        tx.parse(txstr);
+        this.ledger.addTransaction(tx);
+        this.saveToLocalStorage();
+    }
+
+    sendMoney(amount, reciverInformation) {
+        let receiver = JSON.parse(reciverInformation);
         let lasttx_sender = this.ledger.getLastTransaction().shaHash();
-        let lasttx_reciver = reciverLastTx;
+        let lasttx_reciver = receiver.lastTx;
+        let reciverWalletID = receiver.sender;
 
         let transaction = new Transaction(this.ledger.nextId(), this.id, reciverWalletID, amount, lasttx_sender, lasttx_reciver);
         transaction.signSender(this.keyPair);
 
         this.ledger.addTransaction(transaction);
+        this.saveToLocalStorage();
+        
+        return transaction.toString();
     }
     
     saveToLocalStorage() {
@@ -50,7 +69,7 @@ class Wallet {
             return new_wallet;
         }
 
-        let id = localStorage.getItem('wallet_id');
+        let id = Number(localStorage.getItem('wallet_id'));
         let privateKey = localStorage.getItem('privateKey');
         let publicKey = localStorage.getItem('publicKey');
 
@@ -63,7 +82,6 @@ class Wallet {
 
 class Ledger {
     constructor(wallet_id) {
-
         // id, from, to, amount, lasttx_sender, lasttx_reciver
         let init_transaction = new Transaction(Math.floor(Math.random() * 100), 0, wallet_id, 100, 0, 0); 
         this.count = 0;
@@ -166,10 +184,10 @@ class Transaction {
     parse(txstr) {
         let tx = txstr.split("|");
 
-        this.id = tx[0];
-        this.from = tx[1];
-        this.to = tx[2];
-        this.amount = tx[3];
+        this.id = Number(tx[0]);
+        this.from = Number(tx[1]);
+        this.to = Number(tx[2]);
+        this.amount = Number(tx[3]);
         this.lasttx_sender = tx[4];
         this.lasttx_reciver = tx[5];
         this.senderSign = tx[6];
