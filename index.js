@@ -15,7 +15,6 @@ class Wallet {
 
     setId(id) {
         this.id = id;
-
     }
 
     balance() {
@@ -50,7 +49,7 @@ class Wallet {
             return new_wallet;
         }
 
-        let id = localStorage.getItem('wallet_id');
+        let id = Number(localStorage.getItem('wallet_id'));
         let privateKey = localStorage.getItem('privateKey');
         let publicKey = localStorage.getItem('publicKey');
 
@@ -166,10 +165,10 @@ class Transaction {
     parse(txstr) {
         let tx = txstr.split("|");
 
-        this.id = tx[0];
-        this.from = tx[1];
-        this.to = tx[2];
-        this.amount = tx[3];
+        this.id = Number(tx[0]);
+        this.from = Number(tx[1]);
+        this.to = Number(tx[2]);
+        this.amount = Number(tx[3]);
         this.lasttx_sender = tx[4];
         this.lasttx_reciver = tx[5];
         this.senderSign = tx[6];
