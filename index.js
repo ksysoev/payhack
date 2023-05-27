@@ -1,59 +1,19 @@
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1'); // Use the secp256k1 curve
 
-// Generate a key pair
-const senderKeys = ec.genKeyPair();
-const reciverKeys = ec.genKeyPair();
-
-let a = {tx: 1, fr:1, to: 2, amt: 100};
-let tx_id = 1;
-let from = 1;
-let to = 2;
-let amt = 100;
-
-let lasttx_sender = 1;
-let lasttx_reciver = 2;
-
-let tx = create_tx(tx_id, from, to, amt, lasttx_sender, lasttx_reciver, senderKeys)
-
-console.log(tx)
-
-let confirmed_tx = confirm_tx(tx,reciverKeys)
-
-console.log(confirmed_tx)
-
-
-
-
-
-
-function create_tx(tx_id, from, to, amt, lasttx_sender, lasttx_reciver, senderKeys){
-
-    let txstr = tx_id +"|"+ from + "|" + to + "|"+ amt + "|" + lasttx_sender + "|" + lasttx_reciver;
-    
-    signSender  = senderKeys.sign(txstr).toDER('hex');
-
-    return txstr + "|" +  signSender
-}
-
-
-function confirm_tx(txstr,reciverKeys) {
-    signSender = reciverKeys.sign(txstr).toDER('hex');
-
-    return txstr + "|" + signSender;
-}
-
-
 class Ledger {
     constructor(user_id) {
-      this.transactions = [
-      ];
+      this.transactions = [];
       this.balance = 0;
 
       this.userid = user_id;
     }
 
     addTransaction(tx) {
+        if (tx.amountFor(this.userid) + this.balance < 0) {
+            throw "Not enough money";
+        }
+
         this.transactions.push(tx);
         this.balance += tx.amountFor(this.userid);
     }
@@ -88,6 +48,12 @@ class Ledger {
             this.addTransaction(tx);
         }
     }
+
+    topUp(amount) {
+        let tx = new Transaction(this.transactions.length, 0, this.userid, amount, 0, 0);
+        tx.signReciver(reciverKeys);
+        this.addTransaction(tx);
+    }
   }
 
 
@@ -106,12 +72,12 @@ class Ledger {
     }
 
     toString() {
-        if this.senderSign != null {
-            return this.baseString() + "|" + this.senderSign;
+        if (this.reciverSign != null && this.senderSign != null) {
+            return this.baseString() + "|" + this.senderSign +  "|" + this.reciverSign;
         }
 
-        if this.reciverSign != null && this.senderSign != null {
-            return this.baseString() + "|" + this.senderSign +  "|" + this.reciverSign;
+        if (this.senderSign != null) {
+            return this.baseString() + "|" + this.senderSign;
         }
 
         return this.baseString();
@@ -139,14 +105,45 @@ class Ledger {
     }
 
     amountFor(user_id) {
-        if this.from == user_id {
+        if (this.from == user_id) {
             return -this.amount;
         }
 
-        if this.to == user_id {
+        if (this.to == user_id) {
             return this.amount;
         }
 
         throw "User not in transaction";
     }
   }
+
+
+// Generate a key pair
+const senderKeys = ec.genKeyPair();
+const reciverKeys = ec.genKeyPair();
+
+let senderLedger = new Ledger(1);
+let reciverLedger = new Ledger(2);
+
+senderLedger.topUp(1000);
+reciverLedger.topUp(1000);
+
+
+lasttx_sender = senderLedger.getLastTransaction().id
+lasttx_reciver = reciverLedger.getLastTransaction().id
+let transaction = new Transaction(lasttx_sender + 1, 1, 2, 100, lasttx_sender, lasttx_reciver);
+transaction.signSender(senderKeys);
+transaction.signReciver(reciverKeys);
+
+senderLedger.addTransaction(transaction);
+reciverLedger.addTransaction(transaction);
+
+console.log(transaction.toString());
+
+console.log(senderLedger.toString());
+
+console.log(reciverLedger.toString());
+
+
+
+
