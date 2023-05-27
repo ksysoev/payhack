@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ksysoev/payhack/issues"
   },
-  "homepage": "https://github.com/ksysoev/payhack#readme"
+  "homepage": "https://github.com/ksysoev/payhack#readme",
+  "dependencies": {
+    "elliptic": "^6.5.4"
+  }
 }
