@@ -33,14 +33,25 @@ class Wallet {
         });
     }
 
-    sendMoney(amount, reciverWalletID, reciverLastTx) {
+    reciveMoney(txstr) { 
+        let tx = new Transaction();
+        tx.parse(txstr);
+        this.ledger.addTransaction(tx);
+        this.saveToLocalStorage();
+    }
+
+    sendMoney(amount, reciverInformation) {
+        let receiver = JSON.parse(reciverInformation);
         let lasttx_sender = this.ledger.getLastTransaction().shaHash();
-        let lasttx_reciver = reciverLastTx;
+        let lasttx_reciver = receiver.lastTx;
+        let reciverWalletID = receiver.sender;
 
         let transaction = new Transaction(this.ledger.nextId(), this.id, reciverWalletID, amount, lasttx_sender, lasttx_reciver);
         transaction.signSender(this.keyPair);
 
         this.ledger.addTransaction(transaction);
+        this.saveToLocalStorage();
+        
         return transaction.toString();
     }
     
@@ -71,7 +82,6 @@ class Wallet {
 
 class Ledger {
     constructor(wallet_id) {
-
         // id, from, to, amount, lasttx_sender, lasttx_reciver
         let init_transaction = new Transaction(Math.floor(Math.random() * 100), 0, wallet_id, 100, 0, 0); 
         this.count = 0;
