@@ -59,23 +59,22 @@
           <div class="my-q-code-header">
             <div class="my-q-code-titlebalancebadgelogo">
               <div class="my-q-code-titlebalancebadge">
-                <span class="my-q-code-text"><span>My O’Pay QR</span></span>
+                <span class="my-q-code-text"><span>Receiving</span></span>
                 <div class="my-q-code-frame15">
                   <div class="my-q-code-balance"></div>
                 </div>
               </div>
-              <div class="my-q-code-logoclose">
+              <a class="typeamount-logoclose" href="./index.html">
                 <img
-                  src="public/external/iconclose2785-gi84.svg"
-                  alt="iconclose2785"
-                  class="my-q-code-iconclose"
+                  src="public/external/iconclose2792-vk7h.svg"
+                  alt="iconclose2792"
+                  class="typeamount-iconclose"
                 />
-              </div>
+              </a>
             </div>
           </div>
           <div id="step1">
           <div class="my-q-code-qr" id="qrContainer">
-
           </div>
           <button class="my-q-code-footerbutton" id="Procced">
             <div class="my-q-code-btnget">
@@ -86,6 +85,9 @@
           </button>
           </div>
           <div id="step2" style="display: none;">
+            <div id="readerContainer"></div>
+          </div>
+          <div id="step3" style="display: none;">
             <div id="readerContainer"></div>
           </div>
         </div>
@@ -111,6 +113,8 @@
       function onScanSuccess(result) {
         console.log(`Transaction details: ${result}`);
         wallet.reciveMoney(result);
+        window.location.href = './success.html';
+        
       }
 
 

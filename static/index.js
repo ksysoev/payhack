@@ -134,6 +134,7 @@ class Ledger {
         let txs = str.split("%");
 
         this.transactions = [];
+        this.balance = 0;
         for (let i = 0; i < txs.length; i++) {
             let tx = new Transaction();
             tx.parse(txs[i]);

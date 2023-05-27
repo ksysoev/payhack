@@ -43,28 +43,39 @@
       data-tag="font"
     />
     <link rel="stylesheet" href="./public/css/send_money.css" />
+    
   </head>
   <body>
     <div>
       <link href="./public/css/send_money1.css" rel="stylesheet" />
       <link href="./public/css/reciver_info1.css" rel="stylesheet" />
+      <link rel="stylesheet" href="./public/css/reciver_info.css" />
 
       <div class="typeamount-container">
         <div class="typeamount-typeamount">
           <div class="typeamount-header">
             <div class="typeamount-titlebalancebadgelogo">
-              <div class="typeamount-titlebalancebadge"></div>
-              <div class="typeamount-logoclose">
+              <div class="typeamount-titlebalancebadge">
+                <span class="my-q-code-text"><span>Sending</span></span>
+                <div class="my-q-code-frame15">
+                  <div class="my-q-code-balance"></div>
+                </div>
+              </div>
+              <a class="typeamount-logoclose" href="./index.html">
                 <img
                   src="public/external/iconclose2792-vk7h.svg"
                   alt="iconclose2792"
                   class="typeamount-iconclose"
                 />
-              </div>
+              </a>
             </div>
           </div>
+          <div id="step1">
           <div id="readerContainer"></div>
-          <div class="typeamount-content" id ="amount" style="display: none">
+        </div>
+         
+          <div id="step2" style="display: none;">
+          <div class="typeamount-content" id ="amount">
             <div class="typeamount-bar">
               <img
                 src="public/external/rectangle72791-7vqm-200h.png"
@@ -95,9 +106,20 @@
 
         
           </div>
-
-          <div class="my-q-code-qr" id="qrContainer">
           </div>
+          <div id="step3" style="display: none;">
+            <div class="my-q-code-qr" id="qrContainer">   
+            </div>
+            <button class="my-q-code-footerbutton" id="Procced">
+              <div class="my-q-code-btnget">
+                <span class="my-q-code-text2 Body2">
+                  <span>Procced</span>
+                </span>
+              </div>
+            </button>
+          </div>
+          
+          </div>  
         </div>
       </div>
     </div>
@@ -115,7 +137,8 @@
         reciverInfo = result;
         codeScanner.clear();
 
-        document.getElementById("amount").style.display = "block";
+        document.getElementById("step1").style.display = "none";
+        document.getElementById("step2").style.display = "block";
 
       }
 
@@ -145,6 +168,12 @@
         const QRElement = document.getElementById("qrContainer");
         QRElement.innerHTML = "";
         new QRCode(QRElement,  tx );
+        document.getElementById("step2").style.display = "none";
+        document.getElementById("step3").style.display = "block";
+      }
+
+      document.getElementById("Procced").onclick = function() {
+        window.location.href = './success.html';
       }
 
       function onScanError(error) { }
