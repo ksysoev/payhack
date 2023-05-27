@@ -25,6 +25,14 @@ class Wallet {
         return this.ledger.getTransactions();
     }
 
+    reciveMoneyInformation() {
+        let lastTx = this.ledger.getLastTransaction();
+        return JSON.stringify({
+            sender: this.id,
+            lastTx: lastTx.shaHash()
+        });
+    }
+
     sendMoney(amount, reciverWalletID, reciverLastTx) {
         let lasttx_sender = this.ledger.getLastTransaction().shaHash();
         let lasttx_reciver = reciverLastTx;
@@ -33,6 +41,7 @@ class Wallet {
         transaction.signSender(this.keyPair);
 
         this.ledger.addTransaction(transaction);
+        return transaction.toString();
     }
     
     saveToLocalStorage() {
