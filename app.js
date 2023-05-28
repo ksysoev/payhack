@@ -3,70 +3,71 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 //const app = express();
 
-// MySQL connection configuration
-const connection = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root',
-  password: 'password',
-  database: 'zer0pay',
-  port: '3306'
-});
-
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
-  }
-  console.log('Connected to MySQL database!');
-});
-
-// Define your routes and middleware here
-
 const app = express();
+
+class walletRepo {
+  constructor() {
+    this.counter = 0;
+    this.list = [];
+  }
+
+  nextId() {
+    this.counter += 1;
+    return this.counter;
+  }
+
+  add(wallet) {
+    wallet.wallet_id = this.nextId();
+    console.log(wallet);
+    this.list.push(wallet);
+    return wallet;
+  }
+
+  find(wallet_id) {
+    const index = this.list.findIndex(wallet => wallet.wallet_id === wallet_id);
+    return this.list[index];
+  } 
+
+  update(walletUpdated) {
+    const index = this.list.findIndex(wallet => wallet.wallet_id === walletUpdated.wallet_id);
+    this.list[index] = walletUpdated;
+  }
+}
+
+class Wallet {
+  constructor(publicKey, wallet_id) {
+    this.wallet_id = wallet_id;
+    this.publicKey = publicKey;
+  } 
+
+  static CreateNewWallet(repo, publicKey) {
+    const wallet = new Wallet(publicKey);
+    return repo.add(wallet);
+  }
+}
+
+const repo = new walletRepo();
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// MySQL connection configuration
-// ...
-
-// Define your routes and middleware here
-app.post('/create', (req, res) => {
-  // const {wallet_public_key, balance, currency} = req.body;
+app.put('/wallets', (req, res) => {
   let params  = req.body;
-  
-const insertQuery = "INSERT INTO wallet_balances (wallet_public_key, balance, currency) VALUES (?, ?, 'MYR')";
-//  const values = [wallet_public_key, balance, currency];
-
-// JSON.parse()
-//  connection.query(insertQuery, values, (err, result) => {
-  connection.query(insertQuery, [params.wallet_public_key, 0],(err, result) => {
-    if (err) {
-      console.error('Error executing MySQL query:', err);
-      res.status(500).send('Error creating a new row in MySQL');
-      return;
-    }
-    res.status(200).send('New row created successfully!');
-  });
+  const wallet = Wallet.CreateNewWallet(repo, params.wallet_public_key);
+  return res.json(wallet);
 });
 
-// Start the server
-// ...
 
-// Start the server
+app.get('/wallets/:id', (req, res) => {
+    const wallet_id = req.params.id;
+    const wallet = repo.find(wallet_id);
+    res.json(wallet);
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-app.get('/', (req, res) => {
-  connection.query('SELECT * FROM wallet_balances', (err, results) => {
-    if (err) {
-      console.error('Error executing MySQL query:', err);
-      res.status(500).send('Error fetching data from MySQL');
-      return;
-    }
-    res.json(results);
-  });
-});
+
 
 
