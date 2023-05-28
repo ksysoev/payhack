@@ -1,6 +1,8 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const EC = require('elliptic').ec;
+const ec = new EC('secp256k1');
 //const app = express();
 
 const app = express();
@@ -47,6 +49,7 @@ class Wallet {
 }
 
 const repo = new walletRepo();
+const keyPair = ec.genKeyPair();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -62,6 +65,11 @@ app.get('/wallets/:id', (req, res) => {
     const wallet = repo.find(wallet_id);
     res.json(wallet);
 });
+
+app.get('/public_keys', (req, res) => {
+  const publicKey = keyPair.getPublic('hex');
+  res.json({public_key: [publicKey]});  
+})
 
 const port = 3000;
 app.listen(port, () => {
